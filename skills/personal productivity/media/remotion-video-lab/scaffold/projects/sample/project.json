@@ -10,6 +10,7 @@
   "musicVolume": 0.15,
   "segments": [
     { "name": "Intro", "srcStart": 0, "srcEnd": 10, "rate": 1.2 },
+    { "name": "Typing", "srcStart": 12, "srcEnd": 22, "rate": 0.8, "zoom": 1.6, "zoomX": 0.35, "zoomY": 0.55, "zoomInSec": 0.8 },
     { "name": "Key reveal", "srcStart": 30, "srcEnd": 45, "rate": 1.0 }
   ],
   "captions": [

@@ -12,5 +12,9 @@
 - src/projects.ts can be clobbered when multiple videos built in parallel. Symptom: "Could not find composition ID X" with yours missing → re-add import + array entry. "No target found for targetId" puppeteer warning is harmless.
 - npm scripts take a project name: keepRanges/cut/music/narrate/mix/blur -- <name>.
 
+## Zoom (readable typing / code)
+- Per-segment optional fields in project.json: `zoom` (scale >1), `zoomX`/`zoomY` (focal point 0..1), `zoomInSec` (smooth ramp). Rendered via CSS transform on the video wrapper — Remotion honors transform/scale (unlike CSS blur, which is ignored). Use for typing/coding shots: pair with `rate` ≤ 1.0 so text is slow AND large.
+
 ## Workflow
 - read raw clip → propose agenda → confirm with user → then cut. fps30, bgm0.15, 7-seg structure, dims = half source rounded even.
+- tech demo: read raw → design 字幕腳本 → propose edit plan + time allocation → user approves → edit. Typing actions = slow (rate≤1) + zoom in.

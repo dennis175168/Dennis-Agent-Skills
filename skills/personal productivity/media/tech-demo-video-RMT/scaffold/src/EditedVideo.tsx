@@ -2,6 +2,7 @@ import React from "react";
 import {
   AbsoluteFill,
   Audio,
+  Easing,
   interpolate,
   OffthreadVideo,
   Sequence,
@@ -20,7 +21,8 @@ export type Seg = {
   zoom?: number; // target scale, >1 to zoom in (default 1 = no zoom)
   zoomX?: number; // focal point x, 0..1 (default 0.5 = center)
   zoomY?: number; // focal point y, 0..1 (default 0.5 = center)
-  zoomInSec?: number; // smooth ramp duration in output sec (default 0 = instant)
+  zoomInSec?: number; // smooth ramp-in duration in output sec (default 0 = instant)
+  zoomOutSec?: number; // smooth ramp-out at the segment's end (default 0 = hold zoom)
 };
 
 // A caption is anchored to a segment (by index) and positioned in *output*
@@ -107,14 +109,35 @@ const Segment: React.FC<{
   const targetZoom = seg.zoom ?? 1;
   const zx = (seg.zoomX ?? 0.5) * 100;
   const zy = (seg.zoomY ?? 0.5) * 100;
-  const rampFrames = Math.round((seg.zoomInSec ?? 0) * fps);
-  const scale =
-    targetZoom !== 1 && rampFrames > 0
-      ? interpolate(frame, [0, rampFrames], [1, targetZoom], {
-          extrapolateLeft: "clamp",
-          extrapolateRight: "clamp",
-        })
-      : targetZoom;
+  const rampIn = Math.round((seg.zoomInSec ?? 0) * fps);
+  const rampOut = Math.round((seg.zoomOutSec ?? 0) * fps);
+  // Build an eased in -> hold -> out zoom curve. Keyframes must be strictly
+  // increasing, so we assemble them conditionally.
+  let scale = targetZoom;
+  if (targetZoom !== 1) {
+    const kf: number[] = [];
+    const vals: number[] = [];
+    if (rampIn > 0) {
+      kf.push(0, rampIn);
+      vals.push(1, targetZoom);
+    } else {
+      kf.push(0);
+      vals.push(targetZoom);
+    }
+    const outStart = len - rampOut;
+    if (rampOut > 0 && outStart > kf[kf.length - 1]) {
+      kf.push(outStart, len);
+      vals.push(targetZoom, 1);
+    }
+    scale =
+      kf.length > 1
+        ? interpolate(frame, kf, vals, {
+            extrapolateLeft: "clamp",
+            extrapolateRight: "clamp",
+            easing: Easing.inOut(Easing.ease),
+          })
+        : targetZoom;
+  }
 
   return (
     <AbsoluteFill style={{ backgroundColor: "black", opacity }}>
