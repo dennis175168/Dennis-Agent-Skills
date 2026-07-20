@@ -1,0 +1,30 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/teams/vDevPreview/MicrosoftTeams.schema.json",
+  "manifestVersion": "devPreview",
+  "version": "1.0.0",
+  "id": "1c64242f-ffa2-4a78-a931-9542097ab74d",
+  "packageName": "com.dennisli.advancedproductivitytoolkit",
+  "developer": {
+    "name": "Dennis Li",
+    "websiteUrl": "https://learn.microsoft.com",
+    "privacyUrl": "https://privacy.microsoft.com/privacystatement",
+    "termsOfUseUrl": "https://learn.microsoft.com/legal/termsofuse"
+  },
+  "name": {
+    "short": "Advanced Productivity Toolkit",
+    "full": "Advanced Productivity Toolkit for M365 Copilot Cowork"
+  },
+  "description": {
+    "short": "Create branded slide decks and edit tech-demo videos inside Cowork.",
+    "full": "A content-production toolkit for M365 Copilot Cowork bundling two skills. slide-template-creator builds a polished .pptx by generating body slides with pptxgenjs and bolting the corporate template's brand cover and closing pages onto the front and back (triggers: 製作簡報, slide deck, presentation, PowerPoint, 投影片). tech-demo-video-RMT turns a raw product screen-recording into a focused, captioned final video with Remotion + ffmpeg — reading the clip, proposing an edit plan for approval, then trimming, speeding up, adding captions/music/blur, and exporting only the final .mp4 (triggers: edit this tech demo, 剪這支 demo 影片, 產品示範影片剪輯, quick video edit)."
+  },
+  "icons": {
+    "color": "color.png",
+    "outline": "outline.png"
+  },
+  "accentColor": "#0078D4",
+  "agentSkills": [
+    { "folder": "./skills/slide-template-creator" },
+    { "folder": "./skills/tech-demo-video-rmt" }
+  ]
+}
